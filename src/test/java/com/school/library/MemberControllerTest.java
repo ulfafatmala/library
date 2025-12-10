@@ -2,6 +2,7 @@ package com.school.library;
 
 import com.school.library.entity.Member;
 import com.school.library.model.request.CreateMemberRq;
+import com.school.library.model.response.CreateMemberRs;
 import com.school.library.model.response.GenericResponse;
 import com.school.library.repository.MemberRepository;
 import com.school.library.repository.RentRepository;
@@ -16,9 +17,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Date;
-import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -68,6 +68,33 @@ public class MemberControllerTest {
                         GenericResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(),
                         new TypeReference<GenericResponse<String>>(){});
         assertNotNull(response.getError());
+        });
+    }
+
+    @Test
+    void createMemberSuccess() throws  Exception {
+        CreateMemberRq request = new CreateMemberRq();
+        request.setName("Ulfa");
+        request.setEmail("ulfafatmala@gmail.com");
+        request.setAddress("Depok");
+        request.setPhone("62819999900");
+
+        mockMvc.perform(post("/api/member")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        ).andExpectAll(
+                status().is2xxSuccessful()
+        ).andDo(result -> {
+            GenericResponse<CreateMemberRs> response = objectMapper.readValue(result.getResponse().getContentAsString(),
+                    new TypeReference<>(){});
+            assertNull(response.getError());
+            assertEquals("Ulfa", response.getData().getName());
+            assertEquals("ulfafatmala@gmail.com", response.getData().getEmail());
+            assertEquals("Depok", response.getData().getAddress());
+            assertEquals("62819999900", response.getData().getPhone());
+
+            assertTrue(memberRepository.existsById(String.valueOf(response.getData().getId())));
         });
     }
 }
