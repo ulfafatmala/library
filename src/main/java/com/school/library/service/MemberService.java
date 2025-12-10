@@ -16,10 +16,16 @@ public class MemberService {
     private MemberRepository memberRepository;
 
     @Autowired
-    private Validator validator;
+    private ValidationService validationService;
 
     @Transactional
-    public CreateMemberRs createMemberRs(CreateMemberRq createMemberRq) {
+    public CreateMemberRs createMemberRs(CreateMemberRq createMemberRq){
+        validationService.validate(createMemberRq);
+
+        if(memberRepository.existsByEmail(createMemberRq.getEmail())){
+            throw new RuntimeException("Email already exists");
+        }
+
         Member member = new Member();
         member.setName(createMemberRq.getName());
         member.setPhone(createMemberRq.getPhone());

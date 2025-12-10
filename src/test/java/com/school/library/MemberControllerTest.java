@@ -1,47 +1,73 @@
 package com.school.library;
 
+import com.school.library.entity.Member;
 import com.school.library.model.request.CreateMemberRq;
 import com.school.library.model.response.GenericResponse;
 import com.school.library.repository.MemberRepository;
+import com.school.library.repository.RentRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Date;
+import java.util.UUID;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
 public class MemberControllerTest {
     @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mockMvc;
 
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private RentRepository rentRepository;
+
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeEach
+    void setup(){
+        rentRepository.deleteAll();
+        memberRepository.deleteAll();
+
+        Member member = new Member();
+        member.setName("test");
+        member.setEmail("random@gmail.com");
+        member.setAddress("test");
+        member.setPhone("test");
+        member.setJoinDate(new Date());
+        memberRepository.save(member);
+    }
 
     @Test
     void createMemberBadRequest() throws  Exception {
-        CreateMemberRq createMemberRq = new CreateMemberRq();
-        createMemberRq.setName("");
-        createMemberRq.setEmail("salah");
-        
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
-        HttpEntity<CreateMemberRq> request = new HttpEntity<>(createMemberRq, headers);
-        
-        ResponseEntity<String> response = restTemplate.postForEntity("/api/member", request, String.class);
-        
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        GenericResponse<String> genericResponse = objectMapper.readValue(response.getBody(), new TypeReference<GenericResponse<String>>() {});
-        assertNotNull(genericResponse.getErrors());
+        CreateMemberRq request = new CreateMemberRq();
+        request.setName("");
+        request.setEmail("salah");
+        request.setAddress("test");
+        request.setPhone("test");
+
+        mockMvc.perform(post("/api/member")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        ).andExpectAll(
+                status().isBadRequest()
+        ).andDo(result -> {
+                        GenericResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(),
+                        new TypeReference<GenericResponse<String>>(){});
+        assertNotNull(response.getError());
+        });
     }
 }

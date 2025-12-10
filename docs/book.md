@@ -3,9 +3,6 @@
 ##Create Book
 Endpoint : POST /api/book
 
-Request Header :
-- requestId: uuid unique
-
 Request Body :
 ``` json
 {
@@ -40,9 +37,6 @@ Response Body (Failed):
 ##Update Book
 
 Endpoint : PUT /api/book/{idBook}
-
-Request Header :
-- requestId: uuid unique
 
 Request Body :
 ``` json
@@ -80,9 +74,6 @@ Response Body (Failed):
 
 Endpoint : GET /api/book/{idBook}
 
-Request Header :
-- requestId: uuid unique
-
 Response Body (Success):
 ``` json
 {
@@ -107,9 +98,6 @@ Response Body (Failed):
 ##Seach Book
 
 Endpoint : GET /api/book
-
-Request Header :
-- requestId: uuid unique
 
 Query Param :
 - name : String, book name, using like query, opsional
@@ -143,9 +131,6 @@ Response Body (Success):
 ##Remove Book
 
 Endpoint : DELETE /api/book/{idBook}
-
-Request Header :
-- requestId: uuid unique
 
 Response Body (Success):
 ``` json

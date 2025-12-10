@@ -2,8 +2,6 @@
 
 ##Create Rent
 Endpoint : POST /api/rent/{idMember}/{idBook}
-Request Header :
-- requestId: uuid unique
 
 Response Body (Success):
 ``` json
@@ -30,9 +28,6 @@ Response Body (Failed):
 
 ##Update Rent
 Endpoint : PUT /api/rent/{idRent}
-
-Request Header :
-- requestId: uuid unique
 
 Request Body :
 ``` json
@@ -71,9 +66,6 @@ Response Body (Failed):
 
 Endpoint : GET /api/rent/{idRent}
 
-Request Header :
-- requestId: uuid unique
-
 Response Body (Success):
 ``` json
 {
@@ -100,9 +92,6 @@ Response Body (Failed 404):
 ##Seach Book
 
 Endpoint : GET /api/search
-
-Request Header :
-- requestId: uuid unique
 
 Query Param :
 - memberName : String, member name, using like query, opsional
@@ -139,9 +128,6 @@ Response Body (Success):
 ##Remove Rent
 
 Endpoint : DELETE /api/rent/{idRent}
-
-Request Header :
-- requestId: uuid unique
 
 Response Body (Success):
 ``` json

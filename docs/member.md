@@ -4,9 +4,6 @@
 
 Endpoint : POST /api/member
 
-Request Header :
-- requestId: uuid unique
-
 Request Body :
 ``` json
 {
@@ -40,9 +37,6 @@ Response Body (Failed):
 ##Update Member
 
 Endpoint : PUT /api/member/{idMember}
-
-Request Header :
-- requestId: uuid unique
 
 Request Body :
 ``` json
@@ -80,9 +74,6 @@ Response Body (Failed):
 
 Endpoint : GET /api/member/{idMember}
 
-Request Header :
-- requestId: uuid unique
-
 Response Body (Success):
 ``` json
 {
@@ -107,9 +98,6 @@ Response Body (Failed 404):
 ##Seach Member
 
 Endpoint : GET /api/member
-
-Request Header :
-- requestId: uuid unique
 
 Query Param :
 - name : String, member name, using like query, opsional
@@ -142,9 +130,6 @@ Response Body (Success):
 ##Remove Member
 
 Endpoint : DELETE /api/member/{idMember}
-
-Request Header :
-- requestId: uuid unique
 
 Response Body (Success):
 ``` json
