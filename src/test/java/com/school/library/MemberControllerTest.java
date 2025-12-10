@@ -1,12 +1,13 @@
 package com.school.library;
 
 import com.school.library.entity.Member;
-import com.school.library.model.request.CreateMemberRq;
-import com.school.library.model.response.CreateMemberRs;
+import com.school.library.model.request.MemberRq;
+import com.school.library.model.response.MemberRs;
 import com.school.library.model.response.GenericResponse;
 import com.school.library.repository.MemberRepository;
 import com.school.library.repository.RentRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Date;
+import java.util.List;
+import java.util.function.BooleanSupplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -43,7 +46,7 @@ public class MemberControllerTest {
 
         Member member = new Member();
         member.setName("test");
-        member.setEmail("random@gmail.com");
+        member.setEmail("test@gmail.com");
         member.setAddress("test");
         member.setPhone("test");
         member.setJoinDate(new Date());
@@ -52,7 +55,7 @@ public class MemberControllerTest {
 
     @Test
     void createMemberBadRequest() throws  Exception {
-        CreateMemberRq request = new CreateMemberRq();
+        MemberRq request = new MemberRq();
         request.setName("");
         request.setEmail("salah");
         request.setAddress("test");
@@ -73,7 +76,7 @@ public class MemberControllerTest {
 
     @Test
     void createMemberSuccess() throws  Exception {
-        CreateMemberRq request = new CreateMemberRq();
+        MemberRq request = new MemberRq();
         request.setName("Ulfa");
         request.setEmail("ulfafatmala@gmail.com");
         request.setAddress("Depok");
@@ -86,7 +89,7 @@ public class MemberControllerTest {
         ).andExpectAll(
                 status().is2xxSuccessful()
         ).andDo(result -> {
-            GenericResponse<CreateMemberRs> response = objectMapper.readValue(result.getResponse().getContentAsString(),
+            GenericResponse<MemberRs> response = objectMapper.readValue(result.getResponse().getContentAsString(),
                     new TypeReference<>(){});
             assertNull(response.getError());
             assertEquals("Ulfa", response.getData().getName());
@@ -97,4 +100,12 @@ public class MemberControllerTest {
             assertTrue(memberRepository.existsById(String.valueOf(response.getData().getId())));
         });
     }
+
+    @Test
+    void get() throws  Exception {
+        assertEquals(1, memberRepository.count());
+        List<Member> memberList =  memberRepository.findAll();
+        assertTrue(memberRepository.existsById(memberList.get(0).getId()));
+    }
+
 }

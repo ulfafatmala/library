@@ -1,0 +1,24 @@
+package com.school.library.model.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class BookRs {
+    private Long id;
+
+    private String name;
+
+    private String author;
+
+    private String publisher;
+
+    private String dateOfEntry;
+
+    private String numberOfPage;
+}

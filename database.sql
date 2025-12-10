@@ -17,6 +17,7 @@
 --        ('Hanumi Belinda', 'hnm.belinda@gmail.com', '6287777777', 'Jalan Kalimantan Timur No.23, Jakarta Barat');
 
 select * from public.member;
+delete from public.member;
 
 -- CREATE TABLE public.book (
 --                              id serial primary key,

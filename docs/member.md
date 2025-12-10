@@ -11,6 +11,7 @@ Request Body :
     "email":"ulfafatmala@gmail.com",
     "phone":"6281999999",
     "address":"Jalan Kemuning 9 No.4, Depok"
+    "joinDate":"2025-12-09"
 }
 ```
 
@@ -72,7 +73,7 @@ Response Body (Failed):
 
 ##Get Member
 
-Endpoint : GET /api/member/{idMember}
+Endpoint : GET /api/member/{memberId}
 
 Response Body (Success):
 ``` json

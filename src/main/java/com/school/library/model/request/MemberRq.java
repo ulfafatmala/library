@@ -1,6 +1,5 @@
-package com.school.library.model.response;
+package com.school.library.model.request;
 
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,20 +8,27 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateMemberRs {
-    private Long id;
-
+public class MemberRq {
+    @NotNull
+    @Size(max = 100)
     private String name;
 
+    @Email
+    @Size(max = 100)
     private String email;
 
+    @NotNull
+    @Size(max = 100)
     private String phone;
 
+    @Size(max = 500)
     private String address;
 
-    private String joinDate;
+    private Date joinDate;
 }

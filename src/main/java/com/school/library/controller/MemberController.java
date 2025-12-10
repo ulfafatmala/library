@@ -1,16 +1,12 @@
 package com.school.library.controller;
 
-import com.school.library.model.request.CreateMemberRq;
-import com.school.library.model.response.CreateMemberRs;
+import com.school.library.model.request.MemberRq;
+import com.school.library.model.response.MemberRs;
 import com.school.library.model.response.GenericResponse;
 import com.school.library.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.awt.*;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class MemberController {
@@ -20,8 +16,16 @@ public class MemberController {
     @PostMapping(path = "/api/member",
     consumes = MediaType.APPLICATION_JSON_VALUE,
     produces =  MediaType.APPLICATION_JSON_VALUE)
-    public GenericResponse<CreateMemberRs> create(@RequestBody CreateMemberRq createMemberRq) {
-        CreateMemberRs createMemberRs = memberService.createMemberRs(createMemberRq);
-        return GenericResponse.<CreateMemberRs>builder().data(createMemberRs).build();
+    public GenericResponse<MemberRs> create(@RequestBody MemberRq memberRq) {
+        MemberRs createMemberRs = memberService.createMemberRs(memberRq);
+        return GenericResponse.<MemberRs>builder().data(createMemberRs).build();
     }
+
+    @GetMapping(path = "/api/member/{memberId}",
+    produces =  MediaType.APPLICATION_JSON_VALUE)
+    public GenericResponse<MemberRs> get(@PathVariable Long memberId) {
+        MemberRs getMemberRs = memberService.get(memberId);
+        return GenericResponse.<MemberRs>builder().data(getMemberRs).build();
+    }
+
 }
