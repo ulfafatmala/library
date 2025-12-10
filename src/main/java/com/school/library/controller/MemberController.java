@@ -7,6 +7,7 @@ import com.school.library.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.*;
@@ -19,7 +20,7 @@ public class MemberController {
     @PostMapping(path = "/api/member",
     consumes = MediaType.APPLICATION_JSON_VALUE,
     produces =  MediaType.APPLICATION_JSON_VALUE)
-    public GenericResponse<CreateMemberRs> create(CreateMemberRq createMemberRq) {
+    public GenericResponse<CreateMemberRs> create(@RequestBody CreateMemberRq createMemberRq) {
         CreateMemberRs createMemberRs = memberService.createMemberRs(createMemberRq);
         return GenericResponse.<CreateMemberRs>builder().data(createMemberRs).build();
     }
